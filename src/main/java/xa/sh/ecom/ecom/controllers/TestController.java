@@ -36,6 +36,6 @@ public class TestController {
   @GetMapping("/seller")
   @PreAuthorize("hasRole('SELLER')")
   public String sellerAccess() {
-    return "Admin Board.";
+    return "seller Board.";
   }
 }

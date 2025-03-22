@@ -4,6 +4,7 @@ package xa.sh.ecom.ecom.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,7 @@ public class User {
 
     @NotBlank
     @Size(max = 20)
+    @Column(unique = false)
     private String name;
 
     @NotBlank

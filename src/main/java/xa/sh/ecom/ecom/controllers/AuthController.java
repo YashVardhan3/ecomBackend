@@ -74,49 +74,57 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        System.out.println("Received signup request: " + signUpRequest); // Print the entire request
+    
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-
-        // Create new user's account
+    
         User user = new User(signUpRequest.getName(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
-
+    
         Set<String> strRoles = signUpRequest.getRole();
+        System.out.println("Roles from request: " + strRoles); // Print the roles
+    
         Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
+    
+        if (strRoles == null || strRoles.isEmpty()) {
+            System.out.println("Roles are null or empty. Assigning ROLE_USER.");
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
-                switch (role) {
+                System.out.println("Processing role: " + role); // Print each role
+                switch (role.toLowerCase()) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
                         break;
                     case "seller":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_SELLER)
+                        Role sellerRole = roleRepository.findByName(ERole.ROLE_SELLER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
+                        roles.add(sellerRole);
                         break;
-                    default:
+                    default : //This is redundant now. It is also adding user.
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+                        break;
+                            
+                    // NO DEFAULT CASE! //This comment is incorrect now
                 }
             });
         }
-
+    
+        System.out.println("Final roles to be assigned: " + roles); // Print the final roles
         user.setRoles(roles);
         userRepository.save(user);
-
+    
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
      // Example of a protected endpoint
