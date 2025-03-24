@@ -3,8 +3,6 @@ package xa.sh.ecom.ecom.product.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import xa.sh.ecom.ecom.exception.InsufficientStockException;
@@ -58,9 +56,9 @@ public class ProductServiceImpl {
 
     }
 
-    public Page<Product> searchProducts(String query, Pageable pageable) {
-        return productRepository.searchByNameOrDescription(query, pageable);
-    }
+    // public Page<Product> searchProducts(String query, Pageable pageable) {
+    //     return productRepository.searchByNameOrDescription(query, pageable);
+    // }
 
     public Product updateStock(Long productId, int quantityChange) throws ResourceNotFoundException, InsufficientStockException {
         Product product = productRepository.findById(productId)

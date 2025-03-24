@@ -19,10 +19,8 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,16 +35,18 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank @Size(max = 255)
+    @NotBlank
+    @Column
     private String name;
     
     @Column(columnDefinition = "TEXT")
     private String description;
     
-    @DecimalMin("0.0")
+    @Column
     private Double price;
     
     @Min(0)
+    @Column
     private Integer stock;
 
     @Lob
