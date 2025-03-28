@@ -84,7 +84,7 @@ public class WebSecurityConfig {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth ->
-          auth.requestMatchers("/api/auth/**").permitAll() // Allow auth endpoints
+          auth.requestMatchers("/api/auth/**", "/product/**").permitAll() // Allow auth endpoints
               //.requestMatchers("/api/test/**").permitAll() // Allow test endpoints (if you have them)
               .anyRequest().authenticated() // All other requests need authentication
         );

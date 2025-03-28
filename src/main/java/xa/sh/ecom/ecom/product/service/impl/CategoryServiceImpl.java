@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import xa.sh.ecom.ecom.controllers.AuthController;
 import xa.sh.ecom.ecom.exception.ResourceNotFoundException;
 import xa.sh.ecom.ecom.product.models.Category;
 import xa.sh.ecom.ecom.product.repo.CategoryRepo;
@@ -14,15 +13,9 @@ import xa.sh.ecom.ecom.product.repo.CategoryRepo;
 @Service
 public class CategoryServiceImpl {
 
-    private final AuthController authController;
-
 
     @Autowired
     private CategoryRepo catRepo;
-
-    CategoryServiceImpl(AuthController authController) {
-        this.authController = authController;
-    }
 
     public Category createCategory (CategoryRequestDto cateDTO) throws Exception{
         Category category = new Category();
