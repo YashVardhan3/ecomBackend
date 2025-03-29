@@ -1,5 +1,6 @@
 package xa.sh.ecom.ecom.product.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.hibernate.annotations.OnDelete;
@@ -43,7 +44,7 @@ public class Product {
     private String description;
     
     @Column
-    private Double price;
+    private BigDecimal price;
     
     @Min(0)
     @Column

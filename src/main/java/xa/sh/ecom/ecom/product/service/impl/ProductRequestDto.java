@@ -1,5 +1,6 @@
 package xa.sh.ecom.ecom.product.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class ProductRequestDto {
     private String name ;
     private Category category;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private Integer stock ;
     private Seller seller;
     private ArrayList<ProductImage> images;

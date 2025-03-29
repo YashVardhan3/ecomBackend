@@ -30,7 +30,7 @@ public class ProductController {
     @Autowired
     private ProductServiceImpl prodSer;
 
-    @PostMapping("/create")
+    @PostMapping(value ="/create",consumes = {"multipart/form-data"})
     public ResponseEntity<Product> createProduct (@ModelAttribute ProductRequestDto prodDto) throws Exception, ResourceNotFoundException {
         Product product = prodSer.createProduct(prodDto);
 

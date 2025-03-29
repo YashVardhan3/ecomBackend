@@ -3,12 +3,14 @@ package xa.sh.ecom.ecom.giftcard.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // Use Spring's Transactional
 
 import xa.sh.ecom.ecom.exception.InvalidGiftCardException;
 import xa.sh.ecom.ecom.exception.ResourceNotFoundException;
+import xa.sh.ecom.ecom.giftcard.dto.GiftCardRequestDTO;
 import xa.sh.ecom.ecom.giftcard.models.GiftCard;
 import xa.sh.ecom.ecom.giftcard.models.GiftCardRedemption;
 import xa.sh.ecom.ecom.giftcard.repo.GiftCardRedeemRepo;
@@ -43,7 +45,7 @@ public class GiftCardServiceImpl { // Assuming an interface exists
         validateGiftCardStatus(giftCard);
 
         // 3. Check if there's anything to apply against
-        if (orderTotal.compareTo(BigDecimal.ZERO) <= 0) {
+        if (orderTotal==null||orderTotal.compareTo(BigDecimal.ZERO) <= 0) {
              // Or return a result indicating nothing was applied
             return new GiftCardValidationResult(true, orderTotal, null); // No redemption created
         }
@@ -100,6 +102,39 @@ public class GiftCardServiceImpl { // Assuming an interface exists
         }
     }
 
+
+    @Transactional
+    public GiftCard createGiftCard(GiftCardRequestDTO dto) {
+        //log.info("Attempting to create new gift card with balance: {}", dto.getInitialBalance());
+
+        GiftCard giftCard = new GiftCard();
+        giftCard.setInitialValue(dto.getInitialBalance());
+        //giftCard.setInitialBalance(dto.getInitialBalance());
+        giftCard.setRemainingBalance(dto.getInitialBalance()); // Remaining starts same as initial
+        giftCard.setExpirationDate(dto.getExpirationDate()); // Can be null
+        //giftCard.setDescription(dto.getDescription()); // Can be null
+        giftCard.setIsActive(true); // Active by default on creation
+
+        // Generate a unique code (simple UUID-based example)
+        String uniqueCode;
+        int attempts = 0;
+        int maxAttempts = 5; // Prevent infinite loop
+        do {
+            // Generate a random code (e.g., part of a UUID)
+            uniqueCode = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16).toUpperCase();
+            attempts++;
+            if (attempts > maxAttempts) {
+                //log.error("Failed to generate a unique gift card code after {} attempts.", maxAttempts);
+                throw new RuntimeException("Could not generate a unique gift card code."); // Or a custom exception
+            }
+        } while (giftCardRepo.existsByCode(uniqueCode)); // Check uniqueness in DB
+
+        giftCard.setCode(uniqueCode);
+
+        GiftCard savedGiftCard = giftCardRepo.save(giftCard);
+        //log.info("Gift card created successfully with ID: {} and code: {}", savedGiftCard.getId(), savedGiftCard.getCode());
+        return savedGiftCard;
+    }
     // Removed the redundant redeemGiftCard method
     // public void redeemGiftCard(GiftCardRedemption redemption) { ... }
 }
