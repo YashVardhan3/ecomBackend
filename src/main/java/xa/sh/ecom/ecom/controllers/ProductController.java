@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +31,7 @@ public class ProductController {
     private ProductServiceImpl prodSer;
 
     @PostMapping(value ="/create",consumes = {"multipart/form-data"})
-    public ResponseEntity<Product> createProduct (@ModelAttribute ProductRequestDto prodDto) throws Exception, ResourceNotFoundException {
+    public ResponseEntity<Product> createProduct (@RequestBody ProductRequestDto prodDto) throws Exception, ResourceNotFoundException {
         Product product = prodSer.createProduct(prodDto);
 
         return ResponseEntity.ok().body(product);
@@ -94,7 +94,7 @@ public class ProductController {
     }
     
     @PostMapping("/update")
-    public ResponseEntity<Product> updateProduct (@ModelAttribute ProductRequestDto prodDTO) throws ResourceNotFoundException, AccessDeniedException{
+    public ResponseEntity<Product> updateProduct (@RequestBody ProductRequestDto prodDTO) throws ResourceNotFoundException, AccessDeniedException{
         Product product = prodSer.updateProduct(prodDTO);
         
         return ResponseEntity.ok().body(product);

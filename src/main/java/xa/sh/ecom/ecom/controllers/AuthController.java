@@ -58,7 +58,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-
+        String refreshJwt = jwtUtils.generateRefreshToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
@@ -66,6 +66,7 @@ public class AuthController {
 
 		// String refreshToken = jwtUtils.generateRefreshToken(authentication); // If using refresh tokens.
         return ResponseEntity.ok(new JwtResponse(jwt,
+            refreshJwt,
                 userDetails.getId(),
                 userDetails.getName(),
                 userDetails.getEmail(),

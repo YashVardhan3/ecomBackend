@@ -14,9 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "coupons")
 public class Coupon {
@@ -26,11 +24,50 @@ public class Coupon {
     @Column(unique = true, length = 20)
     private String code;
 
+    public Coupon(Long id, String code, DiscountType discountType, BigDecimal discountValue, BigDecimal maxDiscount,
+            Boolean isActive, LocalDate validUntil, Integer maxUses, Integer usedCount, Boolean forNewCustomers,
+            Integer allowedUsesPerUser, Set<CouponUsage> usages) {
+        this.id = id;
+        this.code = code;
+        this.discountType = discountType;
+        this.discountValue = discountValue;
+        this.maxDiscount = maxDiscount;
+        this.isActive = isActive;
+        this.validUntil = validUntil;
+        this.maxUses = maxUses;
+        this.usedCount = usedCount;
+        this.forNewCustomers = forNewCustomers;
+        this.allowedUsesPerUser = allowedUsesPerUser;
+        this.usages = usages;
+    }
+
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
 
+    public Coupon() {
+    }
+
     @Column(precision = 10, scale = 2)
     private BigDecimal discountValue;
+    
+
+    public Coupon(String code, DiscountType discountType, BigDecimal discountValue, Long id, BigDecimal maxDiscount, Integer maxUses, LocalDate validUntil) {
+        this.code = code;
+        this.discountType = discountType;
+        this.discountValue = discountValue;
+        this.id = id;
+        this.maxDiscount = maxDiscount;
+        this.maxUses = maxUses;
+        this.validUntil = validUntil;
+    }
+
+    public BigDecimal getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(BigDecimal discountValue) {
+        this.discountValue = discountValue;
+    }
 
     @Column(precision = 10, scale = 2)
     private BigDecimal maxDiscount;
@@ -45,4 +82,93 @@ public class Coupon {
 
     @OneToMany(mappedBy = "coupon")
     private Set<CouponUsage> usages = new HashSet<>();
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public DiscountType getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(DiscountType discountType) {
+        this.discountType = discountType;
+    }
+
+    public BigDecimal getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public void setMaxDiscount(BigDecimal maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public LocalDate getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(LocalDate validUntil) {
+        this.validUntil = validUntil;
+    }
+
+    public Integer getMaxUses() {
+        return maxUses;
+    }
+
+    public void setMaxUses(Integer maxUses) {
+        this.maxUses = maxUses;
+    }
+
+    public Integer getUsedCount() {
+        return usedCount;
+    }
+
+    public void setUsedCount(Integer usedCount) {
+        this.usedCount = usedCount;
+    }
+
+    public Boolean getForNewCustomers() {
+        return forNewCustomers;
+    }
+
+    public void setForNewCustomers(Boolean forNewCustomers) {
+        this.forNewCustomers = forNewCustomers;
+    }
+
+    public Integer getAllowedUsesPerUser() {
+        return allowedUsesPerUser;
+    }
+
+    public void setAllowedUsesPerUser(Integer allowedUsesPerUser) {
+        this.allowedUsesPerUser = allowedUsesPerUser;
+    }
+
+    public Set<CouponUsage> getUsages() {
+        return usages;
+    }
+
+    public void setUsages(Set<CouponUsage> usages) {
+        this.usages = usages;
+    }
 }

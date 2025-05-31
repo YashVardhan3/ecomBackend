@@ -67,7 +67,7 @@ public class ProductServiceImpl {
             product.setDescription(prodDTO.getDescription());
             product.setSeller(seller.get());
             product.setStock(prodDTO.getStock());
-            product.setImages(prodDTO.getImages());
+            product.setImageUrls(prodDTO.getImageUrls());
 
             return productRepo.save(product);
 
@@ -140,8 +140,8 @@ public class ProductServiceImpl {
         if (prodDto.getStock()!=null) {
             newProduct.setStock(prodDto.getStock());
         }
-        if (prodDto.getImages()!=null) {
-            newProduct.setImages(prodDto.getImages());
+        if (prodDto.getImageUrls()!=null) {
+            newProduct.setImageUrls(prodDto.getImageUrls());
         }
 
         return productRepo.save(newProduct);

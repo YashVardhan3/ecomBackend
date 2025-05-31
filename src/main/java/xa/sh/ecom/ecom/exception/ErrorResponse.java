@@ -3,9 +3,6 @@ package xa.sh.ecom.ecom.exception;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import lombok.Data;
-
-@Data
 public class ErrorResponse {
     private int status;
     private LocalDateTime timestamp;
@@ -25,4 +22,12 @@ public class ErrorResponse {
     }
 
     // Getters
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }
